@@ -14,8 +14,13 @@ local pgsql_version = osm2pgsql.version    -- Version als Variable speichern
 -- a place to store the SQL tables we define in this file
 local tables = {}
 
+tables.points = osm2pgsql.define_node_table('points',{
+    { column = 'tags', type = 'jsonb'},
+    { column = 'geom', type = 'point', not_null = true}
+})
+
     -- Create a linestring table named "ways" with epsg_id as var for EPSG
-  
+
 tables.ways = osm2pgsql.define_way_table('ways', {
     { column = 'tags', type = 'jsonb' },
     { column = 'geom', type = 'linestring', projection = epsg_id, not_null = true }
@@ -42,10 +47,45 @@ function clean_tags(tags)
     return next(tags) == nil
 end
 
+-------------------------------------
+        -- 4. Process entries
+-------------------------------------
 
--- 4. Process entries
+-- A. Process Nodes
 
-    -- here: process ways
+function osm2pgsql.process_node(object)
+    if clean_tags(object.tags) then
+        return
+    end
+
+
+    -- Example for conditional node selection
+
+    -- if object.tags.amenity == 'restaurant' then
+        --tables.restaurants:insert({
+        --  name = object.tags.name,
+        --  cuisine = object.tags.cuisine,
+        --  geom = object:as_point()
+        --})
+    --else
+        --tables.pois:insert({
+            --tags = object.tags,
+            --geom = object:as_point()
+        --})
+    --end
+
+    tables.points:insert({
+        name = object.name,
+        tags = object.tags,
+        geom = object:as_point()
+    })
+
+end
+
+
+
+
+-- B. Process Ways
 function osm2pgsql.process_way(object)
      -- have a look at OBJECT, comment out if not necessary anymore
     print(inspect(object))
