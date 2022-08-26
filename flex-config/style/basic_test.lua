@@ -27,9 +27,14 @@ tables.points = osm2pgsql.define_node_table('points',{
     -- Create a linestring table named "ways" with epsg_id as var for EPSG
 
 tables.ways = osm2pgsql.define_way_table('ways', {
+    { column = 'highway', type = 'text' },
+    { column = 'bicycle', type = 'text' },
+    { column = 'name', type = 'text'},
     { column = 'tags', type = 'jsonb' },
     { column = 'geom', type = 'linestring', projection = epsg_id, not_null = true }
 })
+
+    -- Create a polygon table named "polygons" for all area objects
 
 tables.polygons = osm2pgsql.define_area_table( 'polygons', {
     { column = 'type', type = 'text' },
@@ -126,12 +131,10 @@ end
 
 
 
--- C. Process Polygons
+-- C. Process Boundaries and Relations
 
 function osm2pgsql.process_relation(object)
-    --  Uncomment next line to look at the object data:
-    --  print(inspect(object))
-
+ 
     if clean_tags(object.tags) then
         return
     end
