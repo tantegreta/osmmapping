@@ -1,3 +1,11 @@
+-------------------------------------
+            --To-Do
+-------------------------------------
+-- Helper functions callen?  z.B.
+    -- has_area_tags()
+    -- clean_tags()
+
+
 
 -------------------------------------
             -- 1. Basics
@@ -42,6 +50,9 @@ tables.polygons = osm2pgsql.define_area_table( 'polygons', {
     { column = 'geom', type = 'geometry', not_null = true },
 })
 
+
+
+
 --------------------------------------
           -- 3. Clean Tags
 --------------------------------------
@@ -58,12 +69,32 @@ function clean_tags(tags)
     return next(tags) == nil
 end
 
-
 -------------------------------------
          -- Inspect Dataset
 -------------------------------------
 print(inspect(object))
 
+
+--------------------------------------
+          --HELPER FUNCTIONS
+--------------------------------------
+
+function has_area_tags(tags)
+    if tags.area == 'yes' then
+        return true
+    end
+    if tags.area == 'no' then
+        return false
+    end
+
+    return tags.aeroway
+        or tags.building
+        or tags.landuse
+        or tags['area:highway']
+        or tags['abandoned:building']
+        -- and many more!
+        
+        
 
 -------------------------------------
         -- 4. Process entries
