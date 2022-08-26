@@ -53,6 +53,13 @@ function clean_tags(tags)
     return next(tags) == nil
 end
 
+
+-------------------------------------
+         -- Inspect Dataset
+-------------------------------------
+print(inspect(object))
+
+
 -------------------------------------
         -- 4. Process entries
 -------------------------------------
@@ -93,8 +100,6 @@ end
 
 -- B. Process Ways
 function osm2pgsql.process_way(object)
-     -- have a look at OBJECT, comment out if not necessary anymore
-    print(inspect(object))
 
     if clean_tags(object.tags) then
         return
