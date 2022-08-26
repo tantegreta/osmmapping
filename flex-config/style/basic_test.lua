@@ -1,5 +1,9 @@
--- 1. Basics
-    -- Variables
+
+-------------------------------------
+            -- 1. Basics
+-------------------------------------
+
+-- Variables
     epsg_id = 4326
     postgres_schema = "GER_nrw"
 
@@ -8,8 +12,9 @@ print('osm2pgsql version: ' .. osm2pgsql.version)
 
 local pgsql_version = osm2pgsql.version    -- Version als Variable speichern
 
-
--- 2. Create Tables
+-------------------------------------
+        -- 2. Create Tables
+-------------------------------------
 
 -- a place to store the SQL tables we define in this file
 local tables = {}
@@ -32,8 +37,9 @@ tables.polygons = osm2pgsql.define_area_table( 'polygons', {
     { column = 'geom', type = 'geometry', not_null = true },
 })
 
-
--- 3. Clean Tags
+--------------------------------------
+          -- 3. Clean Tags
+--------------------------------------
 
     -- Remove tags from entries that we won't need at any stage
     -- Returns true if there are no tags left.
@@ -114,7 +120,9 @@ function osm2pgsql.process_way(object)
 end
 
 
--- Process Polygons
+
+-- C. Process Polygons
+
 function osm2pgsql.process_relation(object)
     --  Uncomment next line to look at the object data:
     --  print(inspect(object))
