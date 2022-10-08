@@ -75,3 +75,5 @@ function road_major_process_way(object)
         geom = object:as_linestring()
     })
 end
+
+
