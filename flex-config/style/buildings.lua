@@ -1,3 +1,11 @@
+-----------------------------------------
+--            TO-DO
+-----------------------------------------
+
+-- Buildings prüfen, die kein building tag aber eine Adresse haben (dürften eigentlich nicht viele sein)
+
+
+
 
 local tables = {}
 
@@ -29,25 +37,44 @@ tables.building = osm2pgsql.define_table({
 
 
 
-function address_only_building(tags)
+function building_process_poly(tags)
     -- Cannot have any of these tags
-    if tags.
+    if     tags.aeroway
+        or tags.amenity
+        or tags.boundary
+        or tags['building:part']
+        or tags.demolished
+        or tags.landuse
+        or tags.leisure
+        or tags.natural
+        or tags.office
+        or tags.tourism
     -- or tags.building
         then   
             return false
     end
-
-end
-
-
-
-
-function building_process_poly(object)
+    
     --uncomment to not use print
     print(inspect(object))
 
+    --so far very raw data, not much processed, necessary??
+    
+    tables.building_polygons:insert({
+        type = object.type,
+        name = object.tags.name, --alternative: name = get_name(object.tags)
+        name_en = object.tags,
+        building = object.tags.building,
+        street = object.tags['addr:street'],
+        housenumber = object.tags['addr:housenumber'],
+        postcode = object.tags['addr:postcode'],
+        city = object.tags['addr:city'],
+        
+        entrance = object.tags.entrance,
+        height = object.tags.height,
+        start_date = object.tags.start_date,
+        levels = object.tags.levels,
 
-
-
-
-    tables.road_major:insert({
+        tags = object.tags,
+        geom = object:as_polygon()
+    })
+end
