@@ -12,6 +12,7 @@ local tables = {}
 
 tables.road_major = osm2pgsql.define_table({
     name = 'road_major_lines',
+    schema = schema_name
     ids = {type= 'way', id_column = 'osm_id'},
     columns = {
         {column = 'type', type = 'text'},
