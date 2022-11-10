@@ -5,8 +5,6 @@
 -- Buildings prüfen, die kein building tag aber eine Adresse haben (dürften eigentlich nicht viele sein)
 
 
-
-
 local tables = {}
 
 tables.building = osm2pgsql.define_table({
